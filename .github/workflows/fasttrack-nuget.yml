@@ -30,6 +30,16 @@ jobs:
       - name: Pack NuGet package
         run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output nupkgs
 
+      - name: List contents of nupkgs directory
+        run: |
+          echo "Listing contents of nupkgs directory:"
+          dir nupkgs
+
+      - name: Fail if no .nupkg found
+        run: |
+          if (!(Test-Path -Path "nupkgs/*.nupkg")) { Write-Error "No .nupkg file found in nupkgs directory."; exit 1 }
+        shell: pwsh
+
       - name: Publish to NuGet.org
         uses: actions/upload-artifact@v4
         with:
