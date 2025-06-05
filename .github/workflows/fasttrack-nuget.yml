@@ -1,0 +1,42 @@
+name: Build and Publish FastTrack NuGet Package
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'FastTrack/**'
+      - '.github/workflows/fasttrack-nuget.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore FastTrack/FastTrack.csproj
+
+      - name: Build
+        run: dotnet build FastTrack/FastTrack.csproj --configuration Release --no-restore
+
+      - name: Pack NuGet package
+        run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output nupkgs
+
+      - name: Publish to NuGet.org
+        uses: actions/upload-artifact@v4
+        with:
+          name: fasttrack-nuget
+          path: nupkgs/*.nupkg
+
+      - name: Push package to NuGet.org
+        run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
