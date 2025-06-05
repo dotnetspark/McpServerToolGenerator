@@ -27,7 +27,19 @@ flowchart TD
 
 ## Usage
 
-1. **Annotate your server tool classes:**
+### Using FastTrack via NuGet
+
+1. **Install the NuGet package:**
+
+   Add the FastTrack source generator to your project using the .NET CLI:
+
+   ```sh
+   dotnet add package FastTrack
+   ```
+
+   Or via the NuGet Package Manager in Visual Studio.
+
+2. **Annotate your MCP server tool classes:**
 
    ```csharp
    using Common;
@@ -38,6 +50,12 @@ flowchart TD
        [McpServerToolTypeDescription("Does something")]
        public int DoWork(int x) => x + 1;
    }
+   ```
+
+3. **Build your project.**  
+   The generator will automatically produce McpServerTool classes (e.g., `MyClassTools`) with static methods wrapping your annotated methods.
+
+4. **Use the generated McpServerTool generated** in your codebase as needed.
    ```
 
 2. **Build your project.**  
