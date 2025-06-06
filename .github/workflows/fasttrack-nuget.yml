@@ -13,8 +13,15 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Set nupkg output directory variable
+        run: echo "NUPKG_DIR=${{ github.workspace }}/nupkgs" >> $GITHUB_ENV
+
+      - name: Create nupkgs directory
+        run: mkdir "$NUPKG_DIR"
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -27,35 +34,24 @@ jobs:
       - name: Build
         run: dotnet build FastTrack/FastTrack.csproj --configuration Release --no-restore
 
-
-
-      - name: Set nupkg output directory variable
-        id: vars
-        run: |
-          echo "NUPKG_DIR=${{ github.workspace }}/nupkgs" >> $GITHUB_ENV
-
       - name: Pack NuGet package
         run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output "$NUPKG_DIR"
-
 
       - name: List contents of nupkgs directory
         run: |
           echo "Listing contents of nupkgs directory:"
           dir "$NUPKG_DIR"
 
-
       - name: Fail if no .nupkg found
         run: |
           if (!(Test-Path -Path "$env:NUPKG_DIR/*.nupkg")) { Write-Error "No .nupkg file found in nupkgs directory."; exit 1 }
         shell: pwsh
-
 
       - name: Publish to NuGet.org
         uses: actions/upload-artifact@v4
         with:
           name: fasttrack-nuget
           path: ${{ env.NUPKG_DIR }}/*.nupkg
-
 
       - name: Push package to NuGet.org
         run: dotnet nuget push "$NUPKG_DIR"/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
