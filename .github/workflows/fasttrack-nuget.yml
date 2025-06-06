@@ -28,18 +28,20 @@ jobs:
       - name: Build
         run: dotnet build FastTrack/FastTrack.csproj --configuration Release --no-restore
 
-      - name: Set nupkg output directory variable and create directory
+      - name: Prepare nupkg output directory
         run: |
           echo "NUPKG_DIR=${{ github.workspace }}/nupkgs" >> $GITHUB_ENV
           mkdir "${{ github.workspace }}/nupkgs"
 
       - name: Pack NuGet package
-        run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output "$NUPKG_DIR"
+        run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output "$env:NUPKG_DIR"
+        shell: pwsh
 
       - name: List contents of nupkgs directory
         run: |
           echo "Listing contents of nupkgs directory:"
-          dir "$NUPKG_DIR"
+          dir "$env:NUPKG_DIR"
+        shell: pwsh
 
       - name: Fail if no .nupkg found
         run: |
@@ -53,6 +55,7 @@ jobs:
           path: ${{ env.NUPKG_DIR }}/*.nupkg
 
       - name: Push package to NuGet.org
-        run: dotnet nuget push "$NUPKG_DIR"/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "$env:NUPKG_DIR"/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        shell: pwsh
