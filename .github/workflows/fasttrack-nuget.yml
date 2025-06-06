@@ -27,26 +27,37 @@ jobs:
       - name: Build
         run: dotnet build FastTrack/FastTrack.csproj --configuration Release --no-restore
 
+
+      - name: Set workspace and nupkg output directory
+        id: vars
+        run: |
+          echo "::set-output name=workspace::${{ github.workspace }}"
+          echo "::set-output name=nupkgdir::${{ github.workspace }}/nupkgs"
+
       - name: Pack NuGet package
-        run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output nupkgs
+        run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output "${{ steps.vars.outputs.nupkgdir }}"
+
 
       - name: List contents of nupkgs directory
         run: |
           echo "Listing contents of nupkgs directory:"
-          dir nupkgs
+          dir "${{ steps.vars.outputs.nupkgdir }}"
+
 
       - name: Fail if no .nupkg found
         run: |
-          if (!(Test-Path -Path "nupkgs/*.nupkg")) { Write-Error "No .nupkg file found in nupkgs directory."; exit 1 }
+          if (!(Test-Path -Path "${{ steps.vars.outputs.nupkgdir }}/*.nupkg")) { Write-Error "No .nupkg file found in nupkgs directory."; exit 1 }
         shell: pwsh
+
 
       - name: Publish to NuGet.org
         uses: actions/upload-artifact@v4
         with:
           name: fasttrack-nuget
-          path: nupkgs/*.nupkg
+          path: ${{ steps.vars.outputs.nupkgdir }}/*.nupkg
+
 
       - name: Push package to NuGet.org
-        run: dotnet nuget push nupkgs/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "${{ steps.vars.outputs.nupkgdir }}"/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
         env:
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
