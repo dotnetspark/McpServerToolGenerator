@@ -17,12 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set nupkg output directory variable
-        run: echo "NUPKG_DIR=${{ github.workspace }}/nupkgs" >> $GITHUB_ENV
-
-      - name: Create nupkgs directory
-        run: mkdir "$NUPKG_DIR"
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -33,6 +27,11 @@ jobs:
 
       - name: Build
         run: dotnet build FastTrack/FastTrack.csproj --configuration Release --no-restore
+
+      - name: Set nupkg output directory variable and create directory
+        run: |
+          echo "NUPKG_DIR=${{ github.workspace }}/nupkgs" >> $GITHUB_ENV
+          mkdir "${{ github.workspace }}/nupkgs"
 
       - name: Pack NuGet package
         run: dotnet pack FastTrack/FastTrack.csproj --configuration Release --no-build --output "$NUPKG_DIR"
