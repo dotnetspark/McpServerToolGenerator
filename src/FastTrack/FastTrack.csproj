@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <PackageId>FastTrack</PackageId>
-    <Version>1.0.0</Version>
+    <Version>0.1.0</Version>
     <Authors>Yadel Lopez</Authors>
     <Company>EBL Software LLC</Company>
     <Description>FastTrack is a library for MCP Server Tool Generator. Provides code generation and analysis utilities.</Description>
@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <PackageReference Include="FastTrack.Common" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

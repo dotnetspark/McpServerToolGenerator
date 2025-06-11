@@ -1,16 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net9.0;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>FastTrack.Common</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Yadel Lopez</Authors>
+    <Company>EBL Software LLC</Company>
+    <Description>Common attributes for MCP Server Tool generators and consumers.</Description>
+    <PackageTags>csharp</PackageTags>
+    <RepositoryUrl>https://github.com/dotnetspark/McpServerToolGenerator</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/dotnetspark/McpServerToolGenerator</PackageProjectUrl>
+    <Copyright>Copyright © 2025 EBL Software LLC</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <LangVersion>10.0</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net9.0'">
-    <LangVersion>preview</LangVersion>
   </PropertyGroup>
 
 </Project>
