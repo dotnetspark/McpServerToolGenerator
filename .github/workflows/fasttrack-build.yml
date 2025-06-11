@@ -45,9 +45,9 @@ jobs:
 
       - name: Pack NuGet package
         run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./artifacts
-
+      
       - name: Upload package artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: FastTrack-nuget-package
           path: ./artifacts/*.nupkg
