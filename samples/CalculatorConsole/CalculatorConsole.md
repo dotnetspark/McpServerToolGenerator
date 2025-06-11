@@ -1,4 +1,4 @@
-# CalculatorConsole Use Case
+# CalculatorConsole
 
 This project demonstrates a simple calculator server that can be run as an MCP (Model Context Protocol) tool. It exposes basic arithmetic operations via the MCP protocol.
 
@@ -7,7 +7,7 @@ This project demonstrates a simple calculator server that can be run as an MCP (
 To start the server, use the following command:
 
 ```sh
-dotnet run --project C:\Users\ylrre\source\repos\McpServerToolGenerator\UseCases\CalculatorConsole\CalculatorConsole.csproj
+dotnet run --project C:\Users\ylrre\source\repos\McpServerToolGenerator\samples\CalculatorConsole\CalculatorConsole.csproj
 ```
 
 Or, if using the `mcp.json` configuration, the server can be started by an MCP client using the following configuration:
@@ -21,7 +21,7 @@ Or, if using the `mcp.json` configuration, the server can be started by an MCP c
             "args": [
                 "run",
                 "--project",
-                "C:\\Users\\ylrre\\source\\repos\\McpServerToolGenerator\\UseCases\\CalculatorConsole\\CalculatorConsole.csproj"
+                "C:\\Users\\ylrre\\source\\repos\\McpServerToolGenerator\\samples\\CalculatorConsole\\CalculatorConsole.csproj"
             ]
         }
     }

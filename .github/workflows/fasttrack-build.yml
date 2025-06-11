@@ -1,0 +1,56 @@
+name: Build and Pack FastTrack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/FastTrack/**'
+      - '.github/workflows/fasttrack-build.yml'
+    paths-ignore:
+      - 'Readme.md'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running this workflow'
+        type: string
+        required: true
+        default: Manual run
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - src/FastTrack/FastTrack.csproj
+          - src/Common/Common.csproj
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 'Print manual run reason'
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo 'Reason: ${{ github.event.inputs.reason }}'
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies for ${{ matrix.project }}
+        run: dotnet restore ${{ matrix.project }}
+
+      - name: Build project
+        run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
+
+      - name: Pack NuGet package
+        run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./artifacts
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: FastTrack-nuget-package
+          path: ./artifacts/*.nupkg

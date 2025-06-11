@@ -1,7 +1,7 @@
 <Solution>
-  <Folder Name="/UseCases/">
-    <Project Path="UseCases/CalculatorConsole/CalculatorConsole.csproj" />
+  <Folder Name="/samples/">
+    <Project Path="samples/CalculatorConsole/CalculatorConsole.csproj" />
   </Folder>
-  <Project Path="Common/Common.csproj" />
-  <Project Path="FastTrack/FastTrack.csproj" />
+  <Project Path="src/Common/Common.csproj" />
+  <Project Path="src/FastTrack/FastTrack.csproj" />
 </Solution>
