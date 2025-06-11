@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'src/FastTrack/**'
-      - '.github/workflows/fasttrack-build.yml'
     paths-ignore:
       - 'Readme.md'
   workflow_dispatch:
