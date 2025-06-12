@@ -34,7 +34,6 @@ Thumbs.db
 **/packages/*
 !**/packages/build/
 !**/packages/repositories.config
-NuGet.Config
 
 # NPM Packages
 node_modules/

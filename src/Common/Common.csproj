@@ -4,7 +4,8 @@
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>FastTrack.Common</PackageId>
+    <LangVersion>10.0</LangVersion>
+    <PackageId>McpServerToolGenerator.FastTrack.Common</PackageId>
     <Version>0.1.0</Version>
     <Authors>Yadel Lopez</Authors>
     <Company>EBL Software LLC</Company>
@@ -15,10 +16,6 @@
     <PackageProjectUrl>https://github.com/dotnetspark/McpServerToolGenerator</PackageProjectUrl>
     <Copyright>Copyright © 2025 EBL Software LLC</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <LangVersion>10.0</LangVersion>
   </PropertyGroup>
 
 </Project>

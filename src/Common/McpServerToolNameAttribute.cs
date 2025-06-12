@@ -1,4 +1,4 @@
-namespace Common
+namespace McpServerToolGenerator.FastTrack.Common
 {
     /// <summary>
     /// Attribute to annotate a class with a McpServer tool name.

@@ -3,7 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    <PackageId>FastTrack</PackageId>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <PackageId>McpServerToolGenerator.FastTrack</PackageId>
     <Version>0.1.0</Version>
     <Authors>Yadel Lopez</Authors>
     <Company>EBL Software LLC</Company>
@@ -25,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastTrack.Common" Version="0.1.0" />
+    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

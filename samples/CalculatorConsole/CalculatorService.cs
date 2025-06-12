@@ -1,4 +1,4 @@
-using Common;
+using McpServerToolGenerator.FastTrack.Common;
 
 [McpServerToolName("Calculator")]
 public class CalculatorService

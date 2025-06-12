@@ -22,19 +22,19 @@ flowchart TD
 - Generates static tool classes for each class annotated with `[McpServerToolNameAttribute]`.
 - Wraps methods annotated with `[McpServerToolTypeDescriptionAttribute]` into static methods, including descriptions.
 - Uses Roslyn symbol comparison for attribute detection (no hardcoded attribute names).
-- Supports multi-targeting (`net9.0` and `netstandard2.0`) for broad compatibility.
+- Supports `netstandard2.0` for broad compatibility.
 - Ensures generated code is consistent and reduces boilerplate.
 
 ## Usage
 
-### Using FastTrack via NuGet
+### Using McpServerToolGenerator.FastTrack NuGet package
 
 1. **Install the NuGet package:**
 
-   Add the FastTrack source generator to your project using the .NET CLI:
+   Add the McpServerToolGenerator.FastTrack source generator to your project using the .NET CLI:
 
    ```sh
-   dotnet add package FastTrack
+   dotnet add package McpServerToolGenerator.FastTrack
    ```
 
    Or via the NuGet Package Manager in Visual Studio.
@@ -42,7 +42,7 @@ flowchart TD
 2. **Annotate your MCP server tool classes:**
 
    ```csharp
-   using Common;
+   using McpServerToolGenerator.FastTrack.Common;
 
    [McpServerToolName("MyClass")]
    public class MyClass
@@ -73,15 +73,15 @@ flowchart TD
 
 ## Requirements
 
-- .NET 9.0 or .NET Standard 2.0 (both supported via multitargeting)
+- .NET Standard 2.0
 - Microsoft.CodeAnalysis.CSharp (Roslyn) package
-- Reference to the `Common` project for attribute definitions
+- McpServerToolGenerator.FastTrack for McpServerTool source generation
+- McpServerToolGenerator.FastTrack.Common for attribute definitions
 
 ## Project Structure
 
 - `FastTrackGenerator.cs` — The main source generator implementation.
 - `Common` project — Contains attributes such as `McpServerToolNameAttribute` and `McpServerToolTypeDescriptionAttribute`.
-- Multi-targeted project files for compatibility.
 
 ## Contributing
 
