@@ -37,6 +37,10 @@ jobs:
       - name: Build FastTrack.Common
         run: dotnet build src/Common/Common.csproj --configuration Release --no-restore
 
+      - name: Clean artifacts folder
+        run: rm -rf ./artifacts
+        shell: bash
+
       - name: Pack FastTrack.Common NuGet package
         run: dotnet pack src/Common/Common.csproj --configuration Release --no-build --output ./artifacts
 
