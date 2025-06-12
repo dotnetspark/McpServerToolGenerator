@@ -17,12 +17,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project:
-          - src/FastTrack/FastTrack.csproj
-          - src/Common/Common.csproj
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -37,15 +31,39 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Restore dependencies for ${{ matrix.project }}
-        run: dotnet restore ${{ matrix.project }}
+      - name: Restore dependencies for FastTrack.Common
+        run: dotnet restore src/Common/Common.csproj
 
-      - name: Build project
-        run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
+      - name: Build FastTrack.Common
+        run: dotnet build src/Common/Common.csproj --configuration Release --no-restore
 
-      - name: Pack NuGet package
-        run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./artifacts
-      
+      - name: Pack FastTrack.Common NuGet package
+        run: dotnet pack src/Common/Common.csproj --configuration Release --no-build --output ./artifacts
+
+      - name: Check if FastTrack.Common package was created
+        id: check_common_nupkg
+        run: |
+          if ls ./artifacts/FastTrack.Common*.nupkg 1> /dev/null 2>&1; then
+            echo "FastTrack.Common NuGet package found."
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "FastTrack.Common NuGet package NOT found. Terminating workflow."
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: Restore dependencies for FastTrack
+        if: steps.check_common_nupkg.outputs.found == 'true'
+        run: dotnet restore src/FastTrack/FastTrack.csproj
+
+      - name: Build FastTrack
+        if: steps.check_common_nupkg.outputs.found == 'true'
+        run: dotnet build src/FastTrack/FastTrack.csproj --configuration Release --no-restore
+
+      - name: Pack FastTrack NuGet package
+        if: steps.check_common_nupkg.outputs.found == 'true'
+        run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./artifacts
+
       - name: Upload package artifact
         uses: actions/upload-artifact@v4.6.2
         with:
