@@ -14,11 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastTrack" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Common\Common.csproj" />
+    <PackageReference Include="McpServerToolGenerator.FastTrack" Version="0.1.0" />
+    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

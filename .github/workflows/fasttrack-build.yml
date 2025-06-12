@@ -37,17 +37,17 @@ jobs:
       - name: Build FastTrack.Common
         run: dotnet build src/Common/Common.csproj --configuration Release --no-restore
 
-      - name: Clean artifacts folder
-        run: rm -rf ./artifacts
+      - name: Clean packages folder
+        run: rm -rf ./packages
         shell: bash
 
       - name: Pack FastTrack.Common NuGet package
-        run: dotnet pack src/Common/Common.csproj --configuration Release --no-build --output ./artifacts
+        run: dotnet pack src/Common/Common.csproj --configuration Release --no-build --output ./packages
 
       - name: Check if FastTrack.Common package was created
         id: check_common_nupkg
         run: |
-          if ls ./artifacts/FastTrack.Common*.nupkg 1> /dev/null 2>&1; then
+          if ls ./packages/FastTrack.Common*.nupkg 1> /dev/null 2>&1; then
             echo "FastTrack.Common NuGet package found."
             echo "found=true" >> $GITHUB_OUTPUT
           else
@@ -66,10 +66,10 @@ jobs:
 
       - name: Pack FastTrack NuGet package
         if: steps.check_common_nupkg.outputs.found == 'true'
-        run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./artifacts
+        run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./packages
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v4.6.2
         with:
           name: FastTrack-nuget-package
-          path: ./artifacts/*.nupkg
+          path: ./packages/*.nupkg
