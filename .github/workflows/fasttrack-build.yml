@@ -31,45 +31,54 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Restore dependencies for FastTrack.Common
+      - name: Ensure packages folder exists and is clean
+        run: |
+          if [ -d ./packages ]; then
+            rm -rf ./packages/*
+          else
+            mkdir -p ./packages
+          fi
+        shell: bash
+
+      - name: Restore dependencies for McpServerToolGenerator.FastTrack.Common
         run: dotnet restore src/Common/Common.csproj
 
-      - name: Build FastTrack.Common
+      - name: Build McpServerToolGenerator.FastTrack.Common
         run: dotnet build src/Common/Common.csproj --configuration Release --no-restore
 
       - name: Clean packages folder
         run: rm -rf ./packages
         shell: bash
 
-      - name: Pack FastTrack.Common NuGet package
+      - name: Pack McpServerToolGenerator.FastTrack.Common NuGet package
         run: dotnet pack src/Common/Common.csproj --configuration Release --no-build --output ./packages
 
-      - name: Check if FastTrack.Common package was created
+      - name: Check if McpServerToolGenerator.FastTrack.Common package was created
         id: check_common_nupkg
         run: |
-          if ls ./packages/FastTrack.Common*.nupkg 1> /dev/null 2>&1; then
-            echo "FastTrack.Common NuGet package found."
+          if ls ./packages/McpServerToolGenerator.FastTrack.Common*.nupkg 1> /dev/null 2>&1; then
+            echo "McpServerToolGenerator.FastTrack.Common NuGet package found."
             echo "found=true" >> $GITHUB_OUTPUT
           else
-            echo "FastTrack.Common NuGet package NOT found. Terminating workflow."
+            echo "McpServerToolGenerator.FastTrack.Common NuGet package NOT found. Terminating workflow."
             echo "found=false" >> $GITHUB_OUTPUT
             exit 1
           fi
 
-      - name: Restore dependencies for FastTrack
+      - name: Restore dependencies for McpServerToolGenerator.FastTrack
         if: steps.check_common_nupkg.outputs.found == 'true'
         run: dotnet restore src/FastTrack/FastTrack.csproj
 
-      - name: Build FastTrack
+      - name: Build McpServerToolGenerator.FastTrack
         if: steps.check_common_nupkg.outputs.found == 'true'
         run: dotnet build src/FastTrack/FastTrack.csproj --configuration Release --no-restore
 
-      - name: Pack FastTrack NuGet package
+      - name: Pack McpServerToolGenerator.FastTrack NuGet package
         if: steps.check_common_nupkg.outputs.found == 'true'
         run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./packages
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: FastTrack-nuget-package
+          name: McpServerToolGenerator.FastTrack-nuget-package
           path: ./packages/*.nupkg
