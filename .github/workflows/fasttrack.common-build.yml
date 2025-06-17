@@ -7,8 +7,6 @@ on:
     paths:
       - 'src/FastTrack.Common/**'
       - '.github/workflows/fasttrack.common-build.yml'
-    paths-ignore:
-      - 'Readme.md'
   workflow_dispatch:
     inputs:
       reason:
