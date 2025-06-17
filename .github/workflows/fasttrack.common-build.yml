@@ -1,12 +1,12 @@
-name: Build and Pack FastTrack
+name: Build and Pack FastTrack.Common
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'src/FastTrack/**'
-      - '.github/workflows/fasttrack-build.yml'
+      - 'src/FastTrack.Common/**'
+      - '.github/workflows/fasttrack.common-build.yml'
     paths-ignore:
       - 'Readme.md'
   workflow_dispatch:
@@ -43,17 +43,17 @@ jobs:
           fi
         shell: bash
 
-      - name: Restore dependencies for McpServerToolGenerator.FastTrack
-        run: dotnet restore src/FastTrack/FastTrack.csproj
+      - name: Restore dependencies for McpServerToolGenerator.FastTrack.Common
+        run: dotnet restore src/FastTrack.Common/FastTrack.Common.csproj
 
-      - name: Build McpServerToolGenerator.FastTrack
-        run: dotnet build src/FastTrack/FastTrack.csproj --configuration Release --no-restore
+      - name: Build McpServerToolGenerator.FastTrack.Common
+        run: dotnet build src/FastTrack.Common/FastTrack.Common.csproj --configuration Release --no-restore
 
-      - name: Pack McpServerToolGenerator.FastTrack NuGet package
-        run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./packages
+      - name: Pack McpServerToolGenerator.FastTrack.Common NuGet package
+        run: dotnet pack src/FastTrack.Common/FastTrack.Common.csproj --configuration Release --no-build --output ./packages
 
       - name: Upload package artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: McpServerToolGenerator.FastTrack-nuget-package
+          name: McpServerToolGenerator.FastTrack.Common-nuget-package
           path: ./packages/*.nupkg

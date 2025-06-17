@@ -1,0 +1,2 @@
+// This file is required to satisfy NuGet's requirement for a lib/netstandard2.0/ folder.
+// The FastTrack package is a source generator/analyzer and does not provide runtime libraries.

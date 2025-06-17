@@ -1,11 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using McpServerToolGenerator.FastTrack.Common;
 
 /// <summary>
 /// Roslyn incremental source generator that automatically generates tools
@@ -36,31 +34,75 @@ public class FastTrackGenerator : IIncrementalGenerator
         var classDeclarations = context.SyntaxProvider
             .CreateSyntaxProvider(
                 predicate: (node, _) => node is ClassDeclarationSyntax,
-                transform: (ctx, _) => GetClassInfo(ctx))
-            .Where(classInfo => classInfo != null);
+                transform: (ctx, _) => {
+                    var diags = new List<Diagnostic>();
+                    var classInfo = GetClassInfo(ctx, diags.Add);
+                    return (classInfo, diags);
+                })
+            .Where(tuple => tuple.classInfo != null || tuple.diags.Count > 0);
 
         // Step 2: Register source output
-        context.RegisterSourceOutput(classDeclarations, GenerateSource);
+        context.RegisterSourceOutput(classDeclarations, (spc, tuple) => {
+            foreach (var diag in tuple.diags)
+                spc.ReportDiagnostic(diag);
+            if (tuple.classInfo != null)
+                GenerateSource(spc, tuple.classInfo);
+        });
     }
 
-    private static ClassInfo GetClassInfo(GeneratorSyntaxContext context)
+    private static ClassInfo? GetClassInfo(GeneratorSyntaxContext context, Action<Diagnostic> reportDiagnostic)
     {
         var classSyntax = (ClassDeclarationSyntax)context.Node;
         var classSymbol = context.SemanticModel.GetDeclaredSymbol(classSyntax) as INamedTypeSymbol;
         if (classSymbol == null)
+        {
+            reportDiagnostic(Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    id: "FTG100",
+                    title: "Class symbol not found",
+                    messageFormat: "Class symbol could not be resolved for '{0}'",
+                    category: "FastTrackGenerator",
+                    DiagnosticSeverity.Warning,
+                    isEnabledByDefault: true),
+                classSyntax.GetLocation(),
+                classSyntax.Identifier.Text));
             return null;
+        }
 
         // Get the attribute symbols from the compilation using the full metadata name of the attributes
-        var toolNameAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("Common.McpServerToolNameAttribute");
-        var toolTypeDescAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("Common.McpServerToolTypeDescriptionAttribute");
+        var toolNameAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(McpServerToolNameAttribute).FullName);
+        var toolTypeDescAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(McpServerToolTypeDescriptionAttribute).FullName);
         if (toolNameAttrSymbol == null || toolTypeDescAttrSymbol == null)
+        {
+            reportDiagnostic(Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    id: "FTG101",
+                    title: "Attribute type not found",
+                    messageFormat: "Required attribute types could not be resolved.",
+                    category: "FastTrackGenerator",
+                    DiagnosticSeverity.Warning,
+                    isEnabledByDefault: true),
+                classSyntax.GetLocation()));
             return null;
+        }
 
         // Look for [McpServerToolNameAttribute] using symbol comparison
         var toolNameAttr = classSymbol.GetAttributes()
             .FirstOrDefault(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, toolNameAttrSymbol));
         if (toolNameAttr == null)
+        {
+            reportDiagnostic(Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    id: "FTG102",
+                    title: "Tool attribute missing",
+                    messageFormat: "Class '{0}' does not have the required [McpServerToolName] attribute.",
+                    category: "FastTrackGenerator",
+                    DiagnosticSeverity.Warning,
+                    isEnabledByDefault: true),
+                classSyntax.GetLocation(),
+                classSymbol.Name));
             return null;
+        }
 
         var toolName = toolNameAttr.ConstructorArguments.Length > 0
             ? toolNameAttr.ConstructorArguments[0].Value?.ToString() ?? classSymbol.Name
@@ -87,19 +129,53 @@ public class FastTrackGenerator : IIncrementalGenerator
             .ToList();
 
         if (methods.Count == 0)
+        {
+            reportDiagnostic(Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    id: "FTG103",
+                    title: "No tool methods found",
+                    messageFormat: "Class '{0}' does not have any methods with [McpServerToolTypeDescription] attribute.",
+                    category: "FastTrackGenerator",
+                    DiagnosticSeverity.Info,
+                    isEnabledByDefault: true),
+                classSyntax.GetLocation(),
+                classSymbol.Name));
             return null;
+        }
+
+        var ns = classSymbol.ContainingNamespace.IsGlobalNamespace ? null : classSymbol.ContainingNamespace.ToDisplayString();
+        if (ns == null)
+        {
+            reportDiagnostic(Diagnostic.Create(
+                new DiagnosticDescriptor(
+                    id: "FTG104",
+                    title: "Missing namespace",
+                    messageFormat: "Class '{0}' does not have a valid namespace.",
+                    category: "FastTrackGenerator",
+                    DiagnosticSeverity.Warning,
+                    isEnabledByDefault: true),
+                classSyntax.GetLocation(),
+                classSymbol.Name));
+            return null;
+        }
 
         return new ClassInfo
         {
             ToolName = toolName,
             ClassName = classSymbol.Name,
-            Namespace = classSymbol.ContainingNamespace.IsGlobalNamespace ? null : classSymbol.ContainingNamespace.ToDisplayString(),
+            Namespace = ns,
             Methods = methods
         };
     }
 
     private static void GenerateSource(SourceProductionContext context, ClassInfo classInfo)
     {
+        if (classInfo == null || classInfo.Methods == null || classInfo.ClassName == null || classInfo.ToolName == null || classInfo.Namespace == null)
+        {
+            // Defensive: Should not happen, but prevents null dereference
+            return;
+        }
+        
         var sb = new StringBuilder();
         sb.AppendLine("using System;");
         sb.AppendLine("using System.ComponentModel;");
@@ -132,17 +208,17 @@ public class FastTrackGenerator : IIncrementalGenerator
 
     private class ClassInfo
     {
-        public string ToolName { get; set; }
-        public string ClassName { get; set; }
-        public string Namespace { get; set; }
-        public List<MethodInfo> Methods { get; set; }
+        public string? ToolName { get; set; }
+        public string? ClassName { get; set; }
+        public string? Namespace { get; set; }
+        public List<MethodInfo>? Methods { get; set; }
     }
 
     private class MethodInfo
     {
-        public string Name { get; set; }
-        public string ReturnType { get; set; }
-        public List<(string, string)> Parameters { get; set; }
-        public string Description { get; set; }
+        public string? Name { get; set; }
+        public string? ReturnType { get; set; }
+        public List<(string, string)>? Parameters { get; set; }
+        public string? Description { get; set; }
     }
 }
