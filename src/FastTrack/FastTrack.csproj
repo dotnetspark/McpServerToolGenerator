@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeAnalyzers>true</IncludeAnalyzers>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -16,8 +18,18 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/dotnetspark/McpServerToolGenerator</PackageProjectUrl>
     <Copyright>Copyright © 2025 EBL Software LLC</Copyright>
+    <RootNamespace>McpServerToolGenerator.FastTrack</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" />
+    <None Include="lib/netstandard2.0/_._" Pack="true" PackagePath="lib/netstandard2.0/_._" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0">
@@ -25,10 +37,6 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" PrivateAssets="all" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
   </ItemGroup>
 
 </Project>

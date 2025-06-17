@@ -2,6 +2,6 @@
   <Folder Name="/samples/">
     <Project Path="samples/CalculatorConsole/CalculatorConsole.csproj" />
   </Folder>
-  <Project Path="src/Common/Common.csproj" />
   <Project Path="src/FastTrack/FastTrack.csproj" />
+  <Project Path="src/FastTrack.Common/FastTrack.Common.csproj" />
 </Solution>
