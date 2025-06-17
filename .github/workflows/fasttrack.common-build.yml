@@ -32,10 +32,10 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Ensure packages folder exists and is clean
+      - name: Ensure packages folder exists and clean only FastTrack.Common package
         run: |
           if [ -d ./packages ]; then
-            rm -rf ./packages/*
+            rm -f ./packages/McpServerToolGenerator.FastTrack.Common*.nupkg
           else
             mkdir -p ./packages
           fi
