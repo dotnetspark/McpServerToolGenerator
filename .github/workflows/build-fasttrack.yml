@@ -35,7 +35,7 @@ jobs:
       - name: Ensure packages folder exists and clean only FastTrack package
         run: |
           if [ -d ./packages ]; then
-            rm -f ./packages/McpServerToolGenerator.FastTrack*.nupkg
+            find ./packages -maxdepth 1 -type f -name 'McpServerToolGenerator.FastTrack.[0-9]*.nupkg' -delete
           else
             mkdir -p ./packages
           fi
