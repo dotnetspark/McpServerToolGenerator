@@ -1,4 +1,5 @@
 using McpServerToolGenerator.FastTrack.Common;
+using CalculatorConsole;
 
 [McpServerToolName("Calculator")]
 public class CalculatorService

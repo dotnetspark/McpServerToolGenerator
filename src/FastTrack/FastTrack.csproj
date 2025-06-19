@@ -9,7 +9,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>10.0</LangVersion>
     <PackageId>McpServerToolGenerator.FastTrack</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-beta</Version>
+    <AssemblyInformationalVersion>0.1.0-beta</AssemblyInformationalVersion>
     <Authors>Yadel Lopez</Authors>
     <Company>EBL Software LLC</Company>
     <Description>FastTrack is a library for MCP Server Tool Generator. Provides code generation and analysis utilities.</Description>
@@ -28,10 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0-beta" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="4.14.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

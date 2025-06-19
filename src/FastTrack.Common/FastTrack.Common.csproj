@@ -5,7 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>10.0</LangVersion>
     <PackageId>McpServerToolGenerator.FastTrack.Common</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-beta</Version>
+    <AssemblyInformationalVersion>0.1.0-beta</AssemblyInformationalVersion>
     <Authors>Yadel Lopez</Authors>
     <Company>EBL Software LLC</Company>
     <Description>Common attributes for FastTrack source generator and consumers.</Description>

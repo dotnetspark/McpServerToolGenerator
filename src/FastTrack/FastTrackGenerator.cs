@@ -70,8 +70,8 @@ public class FastTrackGenerator : IIncrementalGenerator
         }
 
         // Get the attribute symbols from the compilation using the full metadata name of the attributes
-        var toolNameAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(McpServerToolNameAttribute).FullName);
-        var toolTypeDescAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(McpServerToolTypeDescriptionAttribute).FullName);
+        var toolNameAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("McpServerToolGenerator.FastTrack.Common.McpServerToolNameAttribute");
+        var toolTypeDescAttrSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("McpServerToolGenerator.FastTrack.Common.McpServerToolTypeDescriptionAttribute");
         if (toolNameAttrSymbol == null || toolTypeDescAttrSymbol == null)
         {
             reportDiagnostic(Diagnostic.Create(

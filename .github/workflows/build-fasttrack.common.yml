@@ -53,5 +53,5 @@ jobs:
       - name: Upload package artifact
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: McpServerToolGenerator.FastTrack.Common-nuget-package
+          name: McpServerToolGenerator.FastTrack.Common
           path: ./packages/*.nupkg
