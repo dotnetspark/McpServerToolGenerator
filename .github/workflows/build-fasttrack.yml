@@ -22,6 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Download FastTrack.Common package artifact
+        uses: actions/download-artifact@v4.3
+        with:
+          name: McpServerToolGenerator.FastTrack.Common
+          path: ./packages
+
       - name: 'Print manual run reason'
         if: ${{ github.event_name == 'workflow_dispatch' }}
         run: |
