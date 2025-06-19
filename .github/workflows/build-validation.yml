@@ -1,0 +1,107 @@
+name: Build and Pack McpServerToolGenerator.FastTrack
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/FastTrack/**'
+      - 'src/FastTrack.Common/**'
+      - '.github/workflows/build-validation.yml'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for running this workflow'
+        type: string
+        required: true
+        default: Manual run
+
+jobs:
+  build-fasttrack-common:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 'Print manual run reason'
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        run: |
+          echo 'Reason: ${{ github.event.inputs.reason }}'
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Ensure packages folder exists and clean all contents
+        run: |
+          if [ -d ./packages ]; then
+            rm -rf ./packages/*
+          else
+            mkdir -p ./packages
+          fi
+        shell: bash
+
+      - name: Restore dependencies for McpServerToolGenerator.FastTrack.Common
+        run: dotnet restore src/FastTrack.Common/FastTrack.Common.csproj
+
+      - name: Build McpServerToolGenerator.FastTrack.Common
+        run: dotnet build src/FastTrack.Common/FastTrack.Common.csproj --configuration Release --no-restore
+
+      - name: Pack McpServerToolGenerator.FastTrack.Common NuGet package
+        run: dotnet pack src/FastTrack.Common/FastTrack.Common.csproj --configuration Release --no-build --output ./packages
+
+      - name: Upload FastTrack.Common package artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: McpServerToolGenerator.FastTrack.Common
+          path: ./packages/McpServerToolGenerator.FastTrack.Common*.nupkg
+
+  build-fasttrack:
+    runs-on: ubuntu-latest
+    needs: build-fasttrack-common
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download FastTrack.Common package artifact
+        uses: actions/download-artifact@v4.3
+        with:
+          name: McpServerToolGenerator.FastTrack.Common
+          path: ./packages
+
+      - name: Check FastTrack.Common package exists before build
+        run: |
+          FILE=$(ls ./packages/McpServerToolGenerator.FastTrack.Common.*.nupkg 2>/dev/null | head -n 1)
+          if [ ! -f "$FILE" ]; then
+            echo "::error::Package McpServerToolGenerator.FastTrack.Common .nupkg not found in ./packages. Aborting."
+            exit 1
+          fi
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies for McpServerToolGenerator.FastTrack
+        run: dotnet restore src/FastTrack/FastTrack.csproj
+
+      - name: Build McpServerToolGenerator.FastTrack
+        run: dotnet build src/FastTrack/FastTrack.csproj --configuration Release --no-restore
+
+      - name: Pack McpServerToolGenerator.FastTrack NuGet package
+        run: dotnet pack src/FastTrack/FastTrack.csproj --configuration Release --no-build --output ./packages
+
+      - name: Upload FastTrack package artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: McpServerToolGenerator.FastTrack
+          path: ./packages/McpServerToolGenerator.FastTrack*.nupkg
+
+      - name: Check FastTrack package exists after build
+        run: |
+          FILE=$(ls ./packages/McpServerToolGenerator.FastTrack.*.nupkg 2>/dev/null | head -n 1)
+          if [ ! -f "$FILE" ]; then
+            echo "::error::Package McpServerToolGenerator.FastTrack .nupkg not found in ./packages. Aborting."
+            exit 1
+          fi
