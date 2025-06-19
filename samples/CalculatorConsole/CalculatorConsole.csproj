@@ -11,8 +11,8 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.5" />
     <PackageReference Include="ModelContextProtocol" Version="0.2.0-preview.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.5" />
-    <PackageReference Include="McpServerToolGenerator.FastTrack" Version="0.1.0" />
-    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0" />
+    <PackageReference Include="McpServerToolGenerator.FastTrack" Version="0.1.0-beta" />
+    <PackageReference Include="McpServerToolGenerator.FastTrack.Common" Version="0.1.0-beta" />
   </ItemGroup>
 
 </Project>

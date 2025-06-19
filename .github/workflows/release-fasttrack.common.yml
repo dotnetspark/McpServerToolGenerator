@@ -15,7 +15,7 @@ jobs:
       - name: Download package artifact
         uses: actions/download-artifact@v4
         with:
-          name: McpServerToolGenerator.FastTrack.Common-nuget-package
+          name: McpServerToolGenerator.FastTrack.Common
           path: ./packages
 
       - name: Check for package and extract version
