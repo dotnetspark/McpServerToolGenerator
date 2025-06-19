@@ -1,4 +1,4 @@
-name: Build and Pack FastTrack
+name: Build and Pack McpServerToolGenerator.FastTrack
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     paths:
       - 'src/FastTrack/**'
       - 'src/FastTrack.Common/**'
-      - '.github/workflows/build-fasttrack.yml'
+      - '.github/workflows/build-validation.yml'
   workflow_dispatch:
     inputs:
       reason:
