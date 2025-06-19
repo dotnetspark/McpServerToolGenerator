@@ -41,9 +41,6 @@ jobs:
           fi
         shell: bash
 
-      - name: Add local package source
-        run: dotnet nuget add source ./packages --name LocalPackages
-
       - name: Restore dependencies for McpServerToolGenerator.FastTrack
         run: dotnet restore src/FastTrack/FastTrack.csproj
 
