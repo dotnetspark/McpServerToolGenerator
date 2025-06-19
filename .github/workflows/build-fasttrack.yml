@@ -41,6 +41,11 @@ jobs:
           fi
         shell: bash
 
+      - name: List contents of packages directory
+        run: |
+          echo "Listing contents of ./packages:"
+          ls -lh ./packages        
+
       - name: Restore dependencies for McpServerToolGenerator.FastTrack
         run: dotnet restore src/FastTrack/FastTrack.csproj
 
