@@ -1,5 +1,8 @@
 # McpServerToolsGenerator
 
+[![Build & Pack](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-fasttrack.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-fasttrack.yml)
+[![Publish NuGet](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml)
+
 ## Overview
 
 **McpServerToolsGenerator** is a Roslyn incremental source generator for C# that automatically generates static tool classes for server-side tools in the ModelContextProtocol (MCP) ecosystem.
@@ -8,7 +11,7 @@ It scans your code for classes and methods annotated with specific attributes an
 
 ## Core Libraries
 
-| NuGet Package | Version | Description |
+| Package | Version | Description |
 |--------------|---------|-------------|
 | [McpServerToolGenerator.FastTrack.Common](https://www.nuget.org/packages/McpServerToolGenerator.FastTrack.Common) | ![Nuget](https://img.shields.io/nuget/v/McpServerToolGenerator.FastTrack.Common.svg?style=flat) | Shared attributes for MCP server tool generators |
 | [McpServerToolGenerator.FastTrack](https://www.nuget.org/packages/McpServerToolGenerator.FastTrack) | ![Nuget](https://img.shields.io/nuget/v/McpServerToolGenerator.FastTrack.svg?style=flat) | Roslyn source generator for MCP server tool wrappers |

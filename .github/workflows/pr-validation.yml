@@ -1,0 +1,18 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+      - 'release/*'
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.cs'
+      - '**.csproj'
+      - '**.sln'
+
+jobs:
+  build-validation:
+    name: validate PR changes
+    uses: ./.github/workflows/build-validation.yml
