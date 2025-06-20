@@ -1,6 +1,7 @@
 # McpServerToolsGenerator
 
-[![Build & Pack](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-fasttrack.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-fasttrack.yml)
+[![Build & Pack](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml)
+
 [![Publish NuGet](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml)
 
 ## Overview
