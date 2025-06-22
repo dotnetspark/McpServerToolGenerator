@@ -8,6 +8,7 @@ on:
       - 'src/FastTrack/**'
       - 'src/FastTrack.Common/**'
       - '.github/workflows/build-validation.yml'
+  workflow_call:
   workflow_dispatch:
     inputs:
       reason:
