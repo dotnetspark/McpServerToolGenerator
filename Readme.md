@@ -1,5 +1,7 @@
 # McpServerToolsGenerator
 
+![Visitors](https://img.shields.io/badge/dynamic/json?color=informational&label=visits&query=value&url=https%3A%2F%2Fapi.visitorbadge.io%2Fapi%2Fcombined%3Fpath%3Ddotnetspark%2FMcpServerToolGenerator%26countColor%3D%23263759)
+
 [![Build & Pack](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml)
 
 [![Publish NuGet](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml)
