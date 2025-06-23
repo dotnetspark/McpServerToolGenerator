@@ -3,6 +3,7 @@
 ![Visitors](https://visitor-badge.laobi.icu/badge?page_id=dotnetspark.McpServerToolGenerator)
 
 [![Build & Pack](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/build-validation.yml)
+[![PR Validation](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/pr-validation.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/pr-validation.yml)
 [![Publish NuGet](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml/badge.svg)](https://github.com/dotnetspark/McpServerToolGenerator/actions/workflows/publish-nuget.yml)
 
 ## Overview
