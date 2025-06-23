@@ -53,7 +53,7 @@ public class FastTrackGenerator : IIncrementalGenerator
     private static ClassInfo? GetClassInfo(GeneratorSyntaxContext context, Action<Diagnostic> reportDiagnostic)
     {
         var classSyntax = (ClassDeclarationSyntax)context.Node;
-        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classSyntax) as INamedTypeSymbol;
+        var classSymbol = context.SemanticModel.GetDeclaredSymbol(classSyntax);
         if (classSymbol == null)
         {
             reportDiagnostic(Diagnostic.Create(
