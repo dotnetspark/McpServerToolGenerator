@@ -12,5 +12,4 @@ on:
 
 jobs:
   build-validation:
-    name: validate PR changes
     uses: ./.github/workflows/build-validation.yml

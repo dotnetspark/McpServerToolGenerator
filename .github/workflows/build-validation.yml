@@ -15,6 +15,7 @@ on:
         type: string
         required: true
         default: Manual run
+  workflow_call:
 
 jobs:
   build-fasttrack-common:
@@ -65,7 +66,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Download FastTrack.Common package artifact
-        uses: actions/download-artifact@v4.3
+        uses: actions/download-artifact@v4
         with:
           name: McpServerToolGenerator.FastTrack.Common
           path: ./packages
